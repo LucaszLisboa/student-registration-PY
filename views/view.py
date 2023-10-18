@@ -11,7 +11,7 @@ from controllers.controllerUser import ControllerUser
 class View:
   def __init__(self):
     self.root = tk.Tk()
-    self._controllerUser = ControllerUser(self)
+    self.controllerUser = ControllerUser(self)
 
     self.root.title("Sistemas Operacionais")
     self.root.geometry("1000x680")
@@ -30,6 +30,7 @@ class View:
     self.root.mainloop()
 
   def showLoginScreen(self):
+    self.clearFields()
     self.loginScreen.tkraise()
 
   def showRegisterScreen(self):
@@ -52,9 +53,9 @@ class View:
     iconUser.image = imgIconUser    
     iconUser.grid(row=0, column=0)
 
-    self.user_entry = Entry(userFrame, highlightthickness=1, background="white", highlightbackground="black", font=('Arial', 28))
+    self.user_entry = Entry(userFrame, highlightthickness=1, background="white", width=18 ,highlightbackground="black", font=('Arial', 28))
     self.user_entry.grid(row=0, column=1) 
-    self.user_entry.insert(0, "Usuário")
+    # self.user_entry.insert(0, "Usuário")
 
     #PASSWORD LOGIN
     passwordFrame = tk.Frame(self.loginScreen)
@@ -65,9 +66,9 @@ class View:
     iconPassword.image = imgIconPassword
     iconPassword.grid(row=0, column=0)
 
-    self.password_entry = Entry(passwordFrame, highlightthickness=1, background="white", highlightbackground="black", font=('Arial', 28))
+    self.password_entry = Entry(passwordFrame, highlightthickness=1, background="white", width=18, highlightbackground="black", font=('Arial', 28), show="•")
     self.password_entry.grid(row=0, column=1)
-    self.password_entry.insert(0, "Senha")
+    # self.password_entry.insert(0, "Senha")
 
     #BUTTON LOGIN
     imgButtonLogin = ImageTk.PhotoImage(Image.open("./images/btn-login.png"))
@@ -92,7 +93,7 @@ class View:
     imgLogoIFPR = ImageTk.PhotoImage(Image.open("./images/logo-ifpr.png"))
     bannerIFPR = tk.Label(self.registerScreen, image=imgLogoIFPR)
     bannerIFPR.image = imgLogoIFPR
-    bannerIFPR.grid(row=0, pady=20, ipadx=90)
+    bannerIFPR.grid(row=0, pady=20)
 
     #USERNAME REGISTER
     userNameFrame = tk.Frame(self.registerScreen)
@@ -103,7 +104,7 @@ class View:
     iconUser.image = imgIconUser
     iconUser.grid(row=0, column=0)
 
-    self.userName_entry = Entry(userNameFrame, highlightthickness=1, background="white", highlightbackground="black", font=('Arial', 28))
+    self.userName_entry = Entry(userNameFrame, highlightthickness=1, background="white", width=18, highlightbackground="black", font=('Arial', 28))
     self.userName_entry.grid(row=0, column=1)
 
     #PASSWORD REGISTER
@@ -115,7 +116,7 @@ class View:
     iconPassword.image = imgIconPassword
     iconPassword.grid(row=0, column=0)
 
-    self.newPassword_entry = Entry(passwordFrame, highlightthickness=1, background="white", highlightbackground="black", font=('Arial', 28), show="•")
+    self.newPassword_entry = Entry(passwordFrame, highlightthickness=1, background="white", width=18, highlightbackground="black", font=('Arial', 28), show="•")
     self.newPassword_entry.grid(row=0, column=1)
 
     #CONFIRM PASSWORD REGISTER
@@ -127,7 +128,7 @@ class View:
     iconConfirmPassword.image = imgIconConfirmPassword
     iconConfirmPassword.grid(row=0, column=0)
 
-    self.confirmPassword_entry = Entry(confirmPasswordFrame, highlightthickness=1, background="white", highlightbackground="black", font=('Arial', 28), show="•")
+    self.confirmPassword_entry = Entry(confirmPasswordFrame, highlightthickness=1, background="white", width=18, highlightbackground="black", font=('Arial', 28), show="•")
     self.confirmPassword_entry.grid(row=0, column=1)
 
     #CUTTONS REGISTER
@@ -137,10 +138,22 @@ class View:
     button_back.grid(row=4, pady=10)  
 
     imgButtonRegister = ImageTk.PhotoImage(Image.open("./images/btn-register.png"))
-    button_register = tk.Button(self.registerScreen, image=imgButtonRegister, borderwidth=0)
+    button_register = tk.Button(self.registerScreen, image=imgButtonRegister, borderwidth=0, command=self.registerUser)
     button_register.image = imgButtonRegister
     button_register.grid(row=5)
 
+  def registerUser(self):
+    userName = self.userName_entry.get().strip()
+    password = self.newPassword_entry.get()
+    confirmPassword = self.confirmPassword_entry.get()
+    self.controllerUser.registerUser(userName, password, confirmPassword)
+
+  def clearFields(self):
+    self.user_entry.delete(0, END)
+    self.password_entry.delete(0, END)
+    self.userName_entry.delete(0, END)
+    self.newPassword_entry.delete(0, END)
+    self.confirmPassword_entry.delete(0, END)
 
 
 View()
