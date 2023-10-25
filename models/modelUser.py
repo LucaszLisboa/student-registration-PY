@@ -1,4 +1,3 @@
-import pymongo
 from database.database import Database
 from bson.objectid import ObjectId
 import hashlib
@@ -33,10 +32,9 @@ class ModelUser:
         }
         collection.insert_one(user)
       else:
-        print("Senhas não coincidem")
+        raise ValueError("Senhas não coincidem, tente novamente!")
     else:
-      print("Usuário já cadastrado")
-    # return user
+      raise ValueError("Usuário já cadastrado, tente novamente!")
     
   def verifyUserRegister(self, userName):
     collection = self.db['usuarios']
@@ -45,4 +43,13 @@ class ModelUser:
       return False
     else:
       return True
+    
+  def loginUser(self, userName, password):
+    encryptedPassword = hashlib.sha256(password.encode()).hexdigest()
+    collection = self.db['usuarios']
+    record = collection.find_one({"userName": userName, "password": encryptedPassword})
+    if record is None:
+      raise ValueError("Usuário ou senha inválidos, tente novamente!")
+
+
       

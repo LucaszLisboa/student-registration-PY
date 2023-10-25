@@ -25,16 +25,22 @@ class View:
     self.registerScreen()
     self.registerScreen.grid(row=0, column=0, sticky="nsew")
 
+    self.mainScreen()
+    self.mainScreen.grid(row=0, column=0, sticky="nsew")
+
     self.showLoginScreen()
 
     self.root.mainloop()
 
   def showLoginScreen(self):
-    self.clearFields()
+    self.clearAllFields()
     self.loginScreen.tkraise()
 
   def showRegisterScreen(self):
     self.registerScreen.tkraise()
+
+  def showMainScreen(self):
+    self.mainScreen.tkraise()
 
   def loginScreen(self):
     self.loginScreen = tk.Frame(self.container)
@@ -72,7 +78,7 @@ class View:
 
     #BUTTON LOGIN
     imgButtonLogin = ImageTk.PhotoImage(Image.open("./images/btn-login.png"))
-    button_login = tk.Button(self.loginScreen, image=imgButtonLogin, borderwidth=0)
+    button_login = tk.Button(self.loginScreen, image=imgButtonLogin, borderwidth=0, cursor="hand2", command=self.loginUser)
     button_login.image = imgButtonLogin
     button_login.grid(row=3, pady=20)
 
@@ -82,7 +88,7 @@ class View:
     label = tk.Label(labelCadastro, text="Não possui uma conta?", font=('Arial', 16))
     label.grid(row=0)
 
-    labelCadastro = tk.Button(labelCadastro, text="Cadastre-se", font=('Arial', 16), borderwidth=0, foreground='#047CFC', command=self.showRegisterScreen)
+    labelCadastro = tk.Button(labelCadastro, text="Cadastre-se", font=('Arial', 16), borderwidth=0, foreground='#047CFC', cursor="hand2", command=self.showRegisterScreen)
     labelCadastro.grid(row=0, column=1)
 
 
@@ -133,14 +139,20 @@ class View:
 
     #CUTTONS REGISTER
     imgButtonBack = ImageTk.PhotoImage(Image.open("./images/btn-back.png"))
-    button_back = tk.Button(self.registerScreen, image=imgButtonBack, borderwidth=0, command=self.showLoginScreen)
+    button_back = tk.Button(self.registerScreen, image=imgButtonBack, borderwidth=0, cursor="hand2", command=self.showLoginScreen)
     button_back.image = imgButtonBack
     button_back.grid(row=4, pady=10)  
 
     imgButtonRegister = ImageTk.PhotoImage(Image.open("./images/btn-register.png"))
-    button_register = tk.Button(self.registerScreen, image=imgButtonRegister, borderwidth=0, command=self.registerUser)
+    button_register = tk.Button(self.registerScreen, image=imgButtonRegister, borderwidth=0, cursor="hand2", command=self.registerUser)
     button_register.image = imgButtonRegister
     button_register.grid(row=5)
+
+
+  def mainScreen(self):
+    self.mainScreen = tk.Frame(self.container)
+
+    #IMPLEMENTAR AQUI A TELA PRINCIPAL
 
   def registerUser(self):
     userName = self.userName_entry.get().strip()
@@ -148,12 +160,20 @@ class View:
     confirmPassword = self.confirmPassword_entry.get()
     self.controllerUser.registerUser(userName, password, confirmPassword)
 
-  def clearFields(self):
+  def loginUser(self):
+    userName = self.user_entry.get().strip()
+    password = self.password_entry.get()
+    self.controllerUser.loginUser(userName, password)
+
+  def clearAllFields(self):
     self.user_entry.delete(0, END)
     self.password_entry.delete(0, END)
     self.userName_entry.delete(0, END)
     self.newPassword_entry.delete(0, END)
     self.confirmPassword_entry.delete(0, END)
+
+  def showWarningMessage(self, message):
+    messagebox.showwarning(title="Error", message=message)
 
 
 View()
