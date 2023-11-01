@@ -28,7 +28,7 @@ class View:
     self.mainScreen()
     self.mainScreen.grid(row=0, column=0, sticky="nsew")
 
-    self.showLoginScreen()
+    self.showMainScreen()
 
     self.root.mainloop()
 
@@ -151,6 +151,54 @@ class View:
 
   def mainScreen(self):
     self.mainScreen = tk.Frame(self.container)
+
+    registerFrame = tk.Frame(self.mainScreen, width=300, height=680)
+    registerFrame.pack(side=LEFT)
+
+    treviewFrame = tk.Frame(self.mainScreen, background="red", width=700, height=680)
+    treviewFrame.pack(side=RIGHT)
+
+    imgLogoIfpr = ImageTk.PhotoImage(Image.open("./images/logo-ifpr-2.png"))
+    bannerIfpr = tk.Label(registerFrame, image=imgLogoIfpr)
+    bannerIfpr.image = imgLogoIfpr
+    bannerIfpr.place(x=10, y=10)
+
+    labelName = tk.Label(registerFrame, text="Nome:", font=('Arial', 14))
+    labelName.place(x=20, y=100)
+    self.entryName = Entry(registerFrame, highlightthickness=1, background="white", width=24, highlightbackground="black", font=('Arial', 14))
+    self.entryName.place(x=20, y=130)
+
+    labelRegistration = tk.Label(registerFrame, text="Matrícula:", font=('Arial', 14))
+    labelRegistration.place(x=20, y=170)
+    self.entryRegistration = Entry(registerFrame, highlightthickness=1, background="white", width=24, highlightbackground="black", font=('Arial', 14))
+    self.entryRegistration.place(x=20, y=200)
+
+    labelDateOfBirth = tk.Label(registerFrame, text="Data de Nascimento:", font=('Arial', 14))
+    labelDateOfBirth.place(x=20, y=240)
+    self.entryDateOfBirth = Entry (registerFrame, highlightthickness=1, background="white", width=24, highlightbackground="black", font=('Arial', 14))
+    self.entryDateOfBirth.place(x=20, y=270)
+
+    labelPhoto = tk.Label(registerFrame, text="Foto:", font=('Arial', 14))
+    labelPhoto.place(x=20, y=310)
+    self.photo = ImageTk.PhotoImage(Image.open("./images/icon-photo.png"))
+    self.studentPhoto = tk.Label(registerFrame, image=self.photo, width=265)
+    self.studentPhoto.image = self.photo
+    self.studentPhoto.place(x=20, y=340)
+
+    imgButtonUploadPhoto = ImageTk.PhotoImage(Image.open("./images/btn-upload.png"))
+    button_uploadPhoto = tk.Button(registerFrame, image=imgButtonUploadPhoto, borderwidth=0, cursor="hand2")
+    button_uploadPhoto.image = imgButtonUploadPhoto
+    button_uploadPhoto.place(x=20, y=550)
+
+    imgButtonAdd = ImageTk.PhotoImage(Image.open("./images/btn-add.png"))
+    button_add = tk.Button(registerFrame, image=imgButtonAdd, borderwidth=0, cursor="hand2")
+    button_add.image = imgButtonAdd
+    button_add.place(x=20, y=600)
+
+    imgLogoIfpr = ImageTk.PhotoImage(Image.open("./images/lista-alunos.png"))
+    bannerIfpr = tk.Label(treviewFrame, image=imgLogoIfpr)
+    bannerIfpr.image = imgLogoIfpr
+    bannerIfpr.place(x=220, y=40)
 
     #IMPLEMENTAR AQUI A TELA PRINCIPAL
 
