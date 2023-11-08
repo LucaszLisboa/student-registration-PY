@@ -3,6 +3,7 @@ from PIL import Image, ImageTk
 import sys
 import tkinter as tk
 from tkinter import ttk
+from tkinter.filedialog import askopenfilename
 
 import os
 from tkinter import messagebox  
@@ -35,7 +36,7 @@ class View:
     self.root.mainloop()
 
   def showLoginScreen(self):
-    self.clearAllFields()
+    self.clearAllFieldsLogin()
     self.loginScreen.tkraise()
 
   def showRegisterScreen(self):
@@ -193,7 +194,7 @@ class View:
     button_uploadPhoto.place(x=20, y=550)
 
     imgButtonAdd = ImageTk.PhotoImage(Image.open("./images/btn-add.png"))
-    button_add = tk.Button(registerFrame, image=imgButtonAdd, borderwidth=0, cursor="hand2")
+    button_add = tk.Button(registerFrame, image=imgButtonAdd, borderwidth=0, cursor="hand2", command=self.registerStudent)
     button_add.image = imgButtonAdd
     button_add.place(x=20, y=600)
 
@@ -228,10 +229,6 @@ class View:
     button_remove = tk.Button(treviewFrame, image=imgButtonRemove, borderwidth=0, cursor="hand2")
     button_remove.image = imgButtonRemove
     button_remove.place(x=490, y=600)
-    
-
-
-    #IMPLEMENTAR AQUI A TELA PRINCIPAL
 
   def registerUser(self):
     userName = self.userName_entry.get().strip()
@@ -244,18 +241,44 @@ class View:
     password = self.password_entry.get()
     self.controllerUser.loginUser(userName, password)
 
-  def clearAllFields(self):
+  def uploadPhoto(self):
+    file_types = [('Jpg files', '*.jpg'), ('PNG files', '*.png')]
+    filename = askopenfilename(filetypes=file_types)
+    if filename:
+      with open(filename, 'rb') as file:
+        self.photo_data = file.read()
+      self.photo = ImageTk.PhotoImage(Image.open(filename).resize((265, 200)))
+      self.studentPhoto.configure(image=self.photo)
+      self.studentPhoto.image = self.photo
+  
+  def registerStudent(self):
+    name = self.entryName.get().strip()
+    registration = self.entryRegistration.get().strip()
+    dateOfBirth = self.entryDateOfBirth.get().strip()
+    photo = self.photo_data
+    self.controllerUser.registerStudent(name, registration, dateOfBirth, photo)
+
+  def clearAllFieldsLogin(self):
     self.user_entry.delete(0, END)
     self.password_entry.delete(0, END)
     self.userName_entry.delete(0, END)
     self.newPassword_entry.delete(0, END)
     self.confirmPassword_entry.delete(0, END)
 
-  def uploadPhoto(self):
-    self.controllerUser.uploadPhoto()
+  def clearAllFieldsStudent(self):
+    self.entryName.delete(0, END)
+    self.entryRegistration.delete(0, END)
+    self.entryDateOfBirth.delete(0, END)
+    self.photo = ImageTk.PhotoImage(Image.open("./images/icon-photo.png"))
+    self.studentPhoto.configure(image=self.photo)
+    self.studentPhoto.image = self.photo
+    
 
   def showWarningMessage(self, message):
     messagebox.showwarning(title="Error", message=message)
+
+  def showSuccessMessage(self, message):
+    messagebox.showinfo(title="Success", message=message)
 
 
 View()
