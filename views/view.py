@@ -2,6 +2,8 @@ from tkinter import *
 from PIL import Image, ImageTk
 import sys
 import tkinter as tk
+from tkinter import ttk
+
 import os
 from tkinter import messagebox  
 
@@ -15,7 +17,7 @@ class View:
 
     self.root.title("Sistemas Operacionais")
     self.root.geometry("1000x680")
-    # self.root.resizable(False,False)
+    self.root.resizable(False,False)
     self.container =tk.Frame(self.root)
     self.container.pack()
 
@@ -155,7 +157,7 @@ class View:
     registerFrame = tk.Frame(self.mainScreen, width=300, height=680)
     registerFrame.pack(side=LEFT)
 
-    treviewFrame = tk.Frame(self.mainScreen, background="red", width=700, height=680)
+    treviewFrame = tk.Frame(self.mainScreen, width=700, height=680)
     treviewFrame.pack(side=RIGHT)
 
     imgLogoIfpr = ImageTk.PhotoImage(Image.open("./images/logo-ifpr-2.png"))
@@ -186,7 +188,7 @@ class View:
     self.studentPhoto.place(x=20, y=340)
 
     imgButtonUploadPhoto = ImageTk.PhotoImage(Image.open("./images/btn-upload.png"))
-    button_uploadPhoto = tk.Button(registerFrame, image=imgButtonUploadPhoto, borderwidth=0, cursor="hand2")
+    button_uploadPhoto = tk.Button(registerFrame, image=imgButtonUploadPhoto, borderwidth=0, cursor="hand2", command=self.uploadPhoto)
     button_uploadPhoto.image = imgButtonUploadPhoto
     button_uploadPhoto.place(x=20, y=550)
 
@@ -199,6 +201,35 @@ class View:
     bannerIfpr = tk.Label(treviewFrame, image=imgLogoIfpr)
     bannerIfpr.image = imgLogoIfpr
     bannerIfpr.place(x=220, y=40)
+
+    self.entrySearch = Entry(treviewFrame, highlightthickness=1, background="white", width=51, highlightbackground="black", font=('Arial', 14))
+    self.entrySearch.place(x=20, y=105)
+
+    imgButtonSearch = ImageTk.PhotoImage(Image.open("./images/btn-search.png"))
+    button_search = tk.Button(treviewFrame, image=imgButtonSearch, borderwidth=0, cursor="hand2")
+    button_search.image = imgButtonSearch
+    button_search.place(x=590, y=102)
+
+    columns = ('ID', 'Nome', 'Matrícula', 'Data de Nascimento', 'Foto')
+    self.treeview = ttk.Treeview(treviewFrame, columns=columns, show='headings', height=21)
+    self.treeview.column('ID', minwidth=0, width=50)
+    self.treeview.column('Nome', minwidth=0, width=200)
+    self.treeview.column('Matrícula', minwidth=0, width=100)
+    self.treeview.column('Data de Nascimento', minwidth=0, width=200)
+    self.treeview.column('Foto', minwidth=0, width=100)
+    self.treeview.heading('ID', text='ID')
+    self.treeview.heading('Nome', text='Nome')
+    self.treeview.heading('Matrícula', text='Matrícula')
+    self.treeview.heading('Data de Nascimento', text='Data de Nascimento')
+    self.treeview.heading('Foto', text='Foto')
+    self.treeview.place(x=20, y=140)
+
+    imgButtonRemove = ImageTk.PhotoImage(Image.open("./images/btn-remove.png"))
+    button_remove = tk.Button(treviewFrame, image=imgButtonRemove, borderwidth=0, cursor="hand2")
+    button_remove.image = imgButtonRemove
+    button_remove.place(x=490, y=600)
+    
+
 
     #IMPLEMENTAR AQUI A TELA PRINCIPAL
 
@@ -219,6 +250,9 @@ class View:
     self.userName_entry.delete(0, END)
     self.newPassword_entry.delete(0, END)
     self.confirmPassword_entry.delete(0, END)
+
+  def uploadPhoto(self):
+    self.controllerUser.uploadPhoto()
 
   def showWarningMessage(self, message):
     messagebox.showwarning(title="Error", message=message)
