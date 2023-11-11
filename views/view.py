@@ -9,14 +9,14 @@ import os
 from tkinter import messagebox  
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from controllers.controllerUser import ControllerUser
+from controllers.controller import Controller
 
 class View:
   def __init__(self):
     self.root = tk.Tk()
-    self.controllerUser = ControllerUser(self)
+    self.controller = Controller(self)
 
-    self.root.title("Sistemas Operacionais")
+    self.root.title("Instituto Federal do Paraná - Campus Londrina")
     self.root.geometry("1000x680")
     self.root.resizable(False,False)
     self.container =tk.Frame(self.root)
@@ -43,6 +43,7 @@ class View:
     self.registerScreen.tkraise()
 
   def showMainScreen(self):
+    self.updateStudentsTable()
     self.mainScreen.tkraise()
 
   def loginScreen(self):
@@ -184,6 +185,7 @@ class View:
     labelPhoto = tk.Label(registerFrame, text="Foto:", font=('Arial', 14))
     labelPhoto.place(x=20, y=310)
     self.photo = ImageTk.PhotoImage(Image.open("./images/icon-photo.png"))
+    self.photo_data = None
     self.studentPhoto = tk.Label(registerFrame, image=self.photo, width=265)
     self.studentPhoto.image = self.photo
     self.studentPhoto.place(x=20, y=340)
@@ -207,7 +209,7 @@ class View:
     self.entrySearch.place(x=20, y=105)
 
     imgButtonSearch = ImageTk.PhotoImage(Image.open("./images/btn-search.png"))
-    button_search = tk.Button(treviewFrame, image=imgButtonSearch, borderwidth=0, cursor="hand2")
+    button_search = tk.Button(treviewFrame, image=imgButtonSearch, borderwidth=0, cursor="hand2", command=self.searchStudents)
     button_search.image = imgButtonSearch
     button_search.place(x=590, y=102)
 
@@ -226,7 +228,7 @@ class View:
     self.treeview.place(x=20, y=140)
 
     imgButtonRemove = ImageTk.PhotoImage(Image.open("./images/btn-remove.png"))
-    button_remove = tk.Button(treviewFrame, image=imgButtonRemove, borderwidth=0, cursor="hand2")
+    button_remove = tk.Button(treviewFrame, image=imgButtonRemove, borderwidth=0, cursor="hand2", command=self.removeStudent)
     button_remove.image = imgButtonRemove
     button_remove.place(x=490, y=600)
 
@@ -234,12 +236,12 @@ class View:
     userName = self.userName_entry.get().strip()
     password = self.newPassword_entry.get()
     confirmPassword = self.confirmPassword_entry.get()
-    self.controllerUser.registerUser(userName, password, confirmPassword)
+    self.controller.registerUser(userName, password, confirmPassword)
 
   def loginUser(self):
     userName = self.user_entry.get().strip()
     password = self.password_entry.get()
-    self.controllerUser.loginUser(userName, password)
+    self.controller.loginUser(userName, password)
 
   def uploadPhoto(self):
     file_types = [('Jpg files', '*.jpg'), ('PNG files', '*.png')]
@@ -256,7 +258,33 @@ class View:
     registration = self.entryRegistration.get().strip()
     dateOfBirth = self.entryDateOfBirth.get().strip()
     photo = self.photo_data
-    self.controllerUser.registerStudent(name, registration, dateOfBirth, photo)
+    self.controller.registerStudent(name, registration, dateOfBirth, photo)
+
+  def updateStudentsTable(self, search_term=None):
+    self.treeview.delete(*self.treeview.get_children())
+    students = self.controller.consultStudents(search_term)
+    for student in students:
+      self.treeview.insert('', 'end', values=(
+        student['_id'],
+        student['name'],
+        student['registration'],
+        student['dateOfBirth'],
+        'True' if student['photo'] else 'False'
+      ))
+
+  def searchStudents(self):
+    search_term = self.entrySearch.get().strip()
+    self.updateStudentsTable(search_term)
+
+  def removeStudent(self):
+    selected_student = self.treeview.focus()
+    if selected_student:
+      student_id = self.treeview.item(selected_student, 'values')[0]
+      self.controller.removeStudent(student_id)
+    else:
+      self.showWarningMessage('Selecione um aluno para remover!')
+
+
 
   def clearAllFieldsLogin(self):
     self.user_entry.delete(0, END)

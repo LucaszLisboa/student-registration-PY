@@ -1,7 +1,7 @@
 from models.modelUser import ModelUser
 from models.modelStudent import ModelStudent
 
-class ControllerUser:
+class Controller:
   def __init__(self, view):
     self.modelUser = ModelUser()
     self.modelStudent = ModelStudent()
@@ -25,6 +25,20 @@ class ControllerUser:
     try:
       self.modelStudent.registerStudent(name, registration, dateOfBirth, photo)
       self.view.clearAllFieldsStudent()
-      self.view.showSuccessMessage('Student registered successfully!')
+      self.view.updateStudentsTable()
+      self.view.showSuccessMessage('Aluno cadastrado com sucesso!')
     except ValueError as error:
       self.view.showWarningMessage(error)
+
+  def consultStudents(self, search_term=None):
+    return self.modelStudent.consultStudents(search_term)
+  
+  def removeStudent(self, student_id):
+    try:
+      self.modelStudent.removeStudent(student_id)
+      self.view.updateStudentsTable()
+      self.view.showSuccessMessage('Aluno removido com sucesso!')
+    except ValueError as error:
+      self.view.showWarningMessage(error)
+
+

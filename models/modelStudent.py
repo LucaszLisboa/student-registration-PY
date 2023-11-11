@@ -19,7 +19,7 @@ class ModelStudent:
       self.registration = registration
       self.dateOfBirth = dateOfBirth
       self.photo = photo
-      collection = self.db['students']
+      studentsRepository = self.db['students']
       student = {
           "_id": self.id,
           "name": self.name,
@@ -27,17 +27,28 @@ class ModelStudent:
           "dateOfBirth": self.dateOfBirth,
           "photo": self.photo
       }
-      collection.insert_one(student)
+      studentsRepository.insert_one(student)
     else:
-      raise ValueError("Student already registered, try again!")
+      raise ValueError("Matrícula já cadastrada, tente novamente!")
+    
+  def consultStudents(self, search_term=None):
+    studentsRepository = self.db['students']
+    if search_term == None:
+      return studentsRepository.find()
+    else:
+      return studentsRepository.find({"name": {"$regex": search_term, "$options": "i"}})
+    
+  def removeStudent(self, student_id):
+    studentsRepository = self.db['students']
+    studentsRepository.delete_one({"_id": student_id})
     
   def validateStudentData(self, name, registration, dateOfBirth):
     if not name or not registration or not dateOfBirth:
       raise ValueError("Todos os campos são obrigatórios")
     
   def verifyStudentRegister(self, registration):
-    collection = self.db['students']
-    student = collection.find_one({"registration": registration})
+    studentsRepository = self.db['students']
+    student = studentsRepository.find_one({"registration": registration})
     if student == None:
       return False
     else:
