@@ -21,21 +21,31 @@ class Controller:
     except ValueError as error:
       self.view.showWarningMessage(error)
 
-  def registerStudent(self, name, registration, dateOfBirth, photo):
+  def registerStudent(self, name, registration, dateOfBirth, photo, userLoggedIn):
     try:
-      self.modelStudent.registerStudent(name, registration, dateOfBirth, photo)
+      self.modelStudent.registerStudent(name, registration, dateOfBirth, photo, userLoggedIn)
       self.view.clearAllFieldsStudent()
       self.view.updateStudentsTable()
       self.view.showSuccessMessage('Aluno cadastrado com sucesso!')
     except ValueError as error:
       self.view.showWarningMessage(error)
 
+  def updateStudent(self, student_id, name, registration, dateOfBirth, photo, userLoggedIn):
+    try:
+      self.modelStudent.updateStudent(student_id, name, registration, dateOfBirth, photo, userLoggedIn)
+      self.view.clearAllFieldsStudent()
+      self.view.updateStudentsTable()
+      self.view.showSuccessMessage('Aluno atualizado com sucesso!')
+    except ValueError as error:
+      self.view.showWarningMessage(error)
+
   def consultStudents(self, search_term=None):
     return self.modelStudent.consultStudents(search_term)
   
-  def removeStudent(self, student_id):
+  def removeStudent(self, student_id, userLoggedIn):
     try:
-      self.modelStudent.removeStudent(student_id)
+      self.modelStudent.removeStudent(student_id, userLoggedIn)
+      self.view.clearAllFieldsStudent()
       self.view.updateStudentsTable()
       self.view.showSuccessMessage('Aluno removido com sucesso!')
     except ValueError as error:

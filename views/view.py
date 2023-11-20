@@ -4,6 +4,11 @@ import sys
 import tkinter as tk
 from tkinter import ttk
 from tkinter.filedialog import askopenfilename
+from io import BytesIO
+import base64
+from bson import Binary
+import io
+
 
 import os
 from tkinter import messagebox  
@@ -15,6 +20,7 @@ class View:
   def __init__(self):
     self.root = tk.Tk()
     self.controller = Controller(self)
+    self.insertOrUpdate = None
 
     self.root.title("Instituto Federal do Paraná - Campus Londrina")
     self.root.geometry("1000x680")
@@ -31,7 +37,7 @@ class View:
     self.mainScreen()
     self.mainScreen.grid(row=0, column=0, sticky="nsew")
 
-    self.showMainScreen()
+    self.showLoginScreen()
 
     self.root.mainloop()
 
@@ -167,6 +173,11 @@ class View:
     bannerIfpr.image = imgLogoIfpr
     bannerIfpr.place(x=10, y=10)
 
+    imgButtonClean = ImageTk.PhotoImage(Image.open("./images/btn-clean.png"))
+    button_clean = tk.Button(registerFrame, image=imgButtonClean, borderwidth=0, cursor="hand2", command=self.clearAllFieldsStudent)
+    button_clean.image = imgButtonClean
+    button_clean.place(x=193, y=90)
+
     labelName = tk.Label(registerFrame, text="Nome:", font=('Arial', 14))
     labelName.place(x=20, y=100)
     self.entryName = Entry(registerFrame, highlightthickness=1, background="white", width=24, highlightbackground="black", font=('Arial', 14))
@@ -200,6 +211,11 @@ class View:
     button_add.image = imgButtonAdd
     button_add.place(x=20, y=600)
 
+    imgButtonUpdate = ImageTk.PhotoImage(Image.open("./images/btn-update.png"))
+    button_update = tk.Button(registerFrame, image=imgButtonUpdate, borderwidth=0, cursor="hand2", command=self.updateStudent)
+    button_update.image = imgButtonUpdate
+    button_update.place(x=20, y=635)     
+  
     imgLogoIfpr = ImageTk.PhotoImage(Image.open("./images/lista-alunos.png"))
     bannerIfpr = tk.Label(treviewFrame, image=imgLogoIfpr)
     bannerIfpr.image = imgLogoIfpr
@@ -226,6 +242,7 @@ class View:
     self.treeview.heading('Data de Nascimento', text='Data de Nascimento')
     self.treeview.heading('Foto', text='Foto')
     self.treeview.place(x=20, y=140)
+    self.treeview.bind("<ButtonRelease-1>", self.selectStudentInTable)
 
     imgButtonRemove = ImageTk.PhotoImage(Image.open("./images/btn-remove.png"))
     button_remove = tk.Button(treviewFrame, image=imgButtonRemove, borderwidth=0, cursor="hand2", command=self.removeStudent)
@@ -248,17 +265,32 @@ class View:
     filename = askopenfilename(filetypes=file_types)
     if filename:
       with open(filename, 'rb') as file:
-        self.photo_data = file.read()
-      self.photo = ImageTk.PhotoImage(Image.open(filename).resize((265, 200)))
-      self.studentPhoto.configure(image=self.photo)
-      self.studentPhoto.image = self.photo
+        self.photo_data = base64.b64encode(file.read())
+      photo = ImageTk.PhotoImage(Image.open(filename).resize((265, 200)))
+      self.studentPhoto.configure(image=photo)
+      self.studentPhoto.image = photo
   
   def registerStudent(self):
     name = self.entryName.get().strip()
     registration = self.entryRegistration.get().strip()
     dateOfBirth = self.entryDateOfBirth.get().strip()
     photo = self.photo_data
-    self.controller.registerStudent(name, registration, dateOfBirth, photo)
+    userLoggedIn = self.user_entry.get().strip()
+    self.controller.registerStudent(name, registration, dateOfBirth, photo, userLoggedIn)
+
+  def updateStudent(self):
+    self.treeview.update_idletasks()
+    selected_student = self.treeview.item(self.treeview.focus()).get('values')
+    if selected_student:
+      student_id = selected_student[0]
+      name = self.entryName.get().strip()
+      registration = self.entryRegistration.get().strip()
+      dateOfBirth = self.entryDateOfBirth.get().strip()
+      photo = self.photo_data
+      userLoggedIn = self.user_entry.get().strip()
+      self.controller.updateStudent(student_id, name, registration, dateOfBirth, photo, userLoggedIn)
+    else:
+      self.showWarningMessage('Selecione um aluno para atualizar!')
 
   def updateStudentsTable(self, search_term=None):
     self.treeview.delete(*self.treeview.get_children())
@@ -269,22 +301,38 @@ class View:
         student['name'],
         student['registration'],
         student['dateOfBirth'],
-        'True' if student['photo'] else 'False'
+        student['photo']
       ))
 
   def searchStudents(self):
     search_term = self.entrySearch.get().strip()
     self.updateStudentsTable(search_term)
+  
+  def selectStudentInTable(self, event):
+    student = self.treeview.item(self.treeview.focus(), 'values')
+    # print(student[4])
+    # imageBytes = base64.b64decode(student[4])
+    # image = Image.open(io.BytesIO(imageBytes))
+    # tk_image = ImageTk.PhotoImage(image.resize((265, 200)))
+    # self.studentPhoto = tk.Label(self.studentPhoto, image=tk_image, width=265)
+    # self.studentPhoto.configure(image=tk_image)
+    # self.studentPhoto.image = tk_image
+
+    self.entryName.delete(0, END)
+    self.entryName.insert(0, student[1])
+    self.entryRegistration.delete(0, END)
+    self.entryRegistration.insert(0, student[2])
+    self.entryDateOfBirth.delete(0, END)
+    self.entryDateOfBirth.insert(0, student[3])
 
   def removeStudent(self):
     selected_student = self.treeview.focus()
     if selected_student:
       student_id = self.treeview.item(selected_student, 'values')[0]
-      self.controller.removeStudent(student_id)
+      userLoggedIn = self.user_entry.get().strip()
+      self.controller.removeStudent(student_id, userLoggedIn)
     else:
       self.showWarningMessage('Selecione um aluno para remover!')
-
-
 
   def clearAllFieldsLogin(self):
     self.user_entry.delete(0, END)
@@ -294,6 +342,8 @@ class View:
     self.confirmPassword_entry.delete(0, END)
 
   def clearAllFieldsStudent(self):
+    self.updateStudentsTable()
+
     self.entryName.delete(0, END)
     self.entryRegistration.delete(0, END)
     self.entryDateOfBirth.delete(0, END)
