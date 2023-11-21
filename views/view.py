@@ -307,20 +307,25 @@ class View:
   
   def selectStudentInTable(self, event):
     student = self.treeview.item(self.treeview.focus(), 'values')
-    # print(student[4])
-    # imageBytes = base64.b64decode(student[4])
-    # image = Image.open(io.BytesIO(imageBytes))
-    # tk_image = ImageTk.PhotoImage(image.resize((265, 200)))
-    # self.studentPhoto = tk.Label(self.studentPhoto, image=tk_image, width=265)
-    # self.studentPhoto.configure(image=tk_image)
-    # self.studentPhoto.image = tk_image
+    if student:
+      # exibir foto do aluno salva no banco de dados mongodb 
+      # photo = student[4]
+      # if photo != None:
+      #   image = Image.open(io.BytesIO(base64.b64decode(photo)))
+      #   photo = ImageTk.PhotoImage(image.resize((265, 200)))
+      #   self.studentPhoto.configure(image=photo)
+      #   self.studentPhoto.image = photo
+      # else:
+      #   self.photo = ImageTk.PhotoImage(Image.open("./images/icon-photo.png"))
+      #   self.studentPhoto.configure(image=self.photo)
+      #   self.studentPhoto.image = self.photo
 
-    self.entryName.delete(0, END)
-    self.entryName.insert(0, student[1])
-    self.entryRegistration.delete(0, END)
-    self.entryRegistration.insert(0, student[2])
-    self.entryDateOfBirth.delete(0, END)
-    self.entryDateOfBirth.insert(0, student[3])
+      self.entryName.delete(0, END)
+      self.entryName.insert(0, student[1])
+      self.entryRegistration.delete(0, END)
+      self.entryRegistration.insert(0, student[2])
+      self.entryDateOfBirth.delete(0, END)
+      self.entryDateOfBirth.insert(0, student[3])
 
   def removeStudent(self):
     selected_student = self.treeview.focus()

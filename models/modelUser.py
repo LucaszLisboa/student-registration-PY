@@ -22,7 +22,7 @@ class ModelUser:
         self.password = encryptedPassword
         self.dateCreated = datetime.datetime.now()
         self.lastChange = None
-        collection = self.db['usuarios']
+        collection = self.db['users']
         user = {
             "_id": self.id,
             "userName": self.userName,
@@ -37,7 +37,7 @@ class ModelUser:
       raise ValueError("Usuário já cadastrado, tente novamente!")
     
   def verifyUserRegister(self, userName):
-    collection = self.db['usuarios']
+    collection = self.db['users']
     user = collection.find_one({"userName": userName})
     if user == None:
       return False
@@ -46,7 +46,7 @@ class ModelUser:
     
   def loginUser(self, userName, password):
     encryptedPassword = hashlib.sha256(password.encode()).hexdigest()
-    collection = self.db['usuarios']
+    collection = self.db['users']
     record = collection.find_one({"userName": userName, "password": encryptedPassword})
     if record is None:
       raise ValueError("Usuário ou senha inválidos, tente novamente!")
