@@ -58,7 +58,7 @@ class View:
     imgLogoIFPR = ImageTk.PhotoImage(Image.open("./images/logo-ifpr.png"))
     bannerIFPR = tk.Label(self.loginScreen, image=imgLogoIFPR)
     bannerIFPR.image = imgLogoIFPR
-    bannerIFPR.grid(row=0, pady=20)
+    bannerIFPR.grid(row=0, pady=20, padx=350)
 
     #USERNAME LOGIN
     userFrame = tk.Frame(self.loginScreen)
@@ -71,7 +71,6 @@ class View:
 
     self.user_entry = Entry(userFrame, highlightthickness=1, background="white", width=18 ,highlightbackground="black", font=('Arial', 28))
     self.user_entry.grid(row=0, column=1) 
-    # self.user_entry.insert(0, "Usuário")
 
     #PASSWORD LOGIN
     passwordFrame = tk.Frame(self.loginScreen)
@@ -84,7 +83,6 @@ class View:
 
     self.password_entry = Entry(passwordFrame, highlightthickness=1, background="white", width=18, highlightbackground="black", font=('Arial', 28), show="•")
     self.password_entry.grid(row=0, column=1)
-    # self.password_entry.insert(0, "Senha")
 
     #BUTTON LOGIN
     imgButtonLogin = ImageTk.PhotoImage(Image.open("./images/btn-login.png"))
@@ -102,14 +100,13 @@ class View:
     labelCadastro.grid(row=0, column=1)
 
 
-
   def registerScreen(self):
     self.registerScreen = tk.Frame(self.container)
 
     imgLogoIFPR = ImageTk.PhotoImage(Image.open("./images/logo-ifpr.png"))
     bannerIFPR = tk.Label(self.registerScreen, image=imgLogoIFPR)
     bannerIFPR.image = imgLogoIFPR
-    bannerIFPR.grid(row=0, pady=20)
+    bannerIFPR.grid(row=0, pady=20, padx=350)
 
     #USERNAME REGISTER
     userNameFrame = tk.Frame(self.registerScreen)
