@@ -58,7 +58,7 @@ class View:
     imgLogoIFPR = ImageTk.PhotoImage(Image.open("./images/logo-ifpr.png"))
     bannerIFPR = tk.Label(self.loginScreen, image=imgLogoIFPR)
     bannerIFPR.image = imgLogoIFPR
-    bannerIFPR.grid(row=0, pady=20, padx=350)
+    bannerIFPR.grid(row=0, pady=20, padx=360)
 
     #USERNAME LOGIN
     userFrame = tk.Frame(self.loginScreen)
@@ -106,7 +106,7 @@ class View:
     imgLogoIFPR = ImageTk.PhotoImage(Image.open("./images/logo-ifpr.png"))
     bannerIFPR = tk.Label(self.registerScreen, image=imgLogoIFPR)
     bannerIFPR.image = imgLogoIFPR
-    bannerIFPR.grid(row=0, pady=20, padx=350)
+    bannerIFPR.grid(row=0, pady=20, padx=360)
 
     #USERNAME REGISTER
     userNameFrame = tk.Frame(self.registerScreen)
