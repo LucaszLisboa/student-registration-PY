@@ -258,14 +258,27 @@ class View:
     self.controller.loginUser(userName, password)
 
   def uploadPhoto(self):
-    file_types = [('Jpg files', '*.jpg'), ('PNG files', '*.png')]
-    filename = askopenfilename(filetypes=file_types)
-    if filename:
-      with open(filename, 'rb') as file:
-        self.photo_data = base64.b64encode(file.read())
-      photo = ImageTk.PhotoImage(Image.open(filename).resize((265, 200)))
+    curr_directory = os.getcwd()
+    self.file_path = askopenfilename(initialdir=curr_directory, title="Select Image", filetypes=(("jpeg files", "*.jpg"), ("png files", "*.png")))
+    if self.file_path is not None:
+      os.chdir(curr_directory + "/images/studentsPhoto")
+      completeName = os.path.join(os.getcwd(), self.file_path.split('/')[-1])
+      file1 = open(completeName, 'wb')
+      file1.close()
+      os.chdir(curr_directory)
+      self.photo_data = self.file_path.split('/')[-1]
+      photo = ImageTk.PhotoImage(Image.open(self.file_path).resize((265, 200)))
       self.studentPhoto.configure(image=photo)
       self.studentPhoto.image = photo
+
+    # file_types = [('Jpg files', '*.jpg'), ('PNG files', '*.png')]
+    # filename = askopenfilename(filetypes=file_types)
+    # if filename:
+    #   with open(filename, 'rb') as file:
+    #     self.photo_data = base64.b64encode(file.read())
+    #   photo = ImageTk.PhotoImage(Image.open(filename).resize((265, 200)))
+    #   self.studentPhoto.configure(image=photo)
+    #   self.studentPhoto.image = photo
   
   def registerStudent(self):
     name = self.entryName.get().strip()
