@@ -42,7 +42,7 @@ class View:
     self.root.mainloop()
 
   def showLoginScreen(self):
-    self.clearAllFieldsLogin()
+    self.clearAllLoginFields()
     self.loginScreen.tkraise()
 
   def showRegisterScreen(self):
@@ -55,7 +55,7 @@ class View:
   def loginScreen(self):
     self.loginScreen = tk.Frame(self.container)
 
-    imgLogoIFPR = ImageTk.PhotoImage(Image.open("./images/logo-ifpr.png"))
+    imgLogoIFPR = ImageTk.PhotoImage(Image.open("./images/interface/logo-ifpr.png"))
     bannerIFPR = tk.Label(self.loginScreen, image=imgLogoIFPR)
     bannerIFPR.image = imgLogoIFPR
     bannerIFPR.grid(row=0, pady=20, padx=360)
@@ -64,7 +64,7 @@ class View:
     userFrame = tk.Frame(self.loginScreen)
     userFrame.grid(row=1, pady=20)
 
-    imgIconUser = ImageTk.PhotoImage(Image.open("./images/icon-user.png"))
+    imgIconUser = ImageTk.PhotoImage(Image.open("./images/interface/icon-user.png"))
     iconUser = tk.Label(userFrame, image=imgIconUser)
     iconUser.image = imgIconUser    
     iconUser.grid(row=0, column=0)
@@ -76,7 +76,7 @@ class View:
     passwordFrame = tk.Frame(self.loginScreen)
     passwordFrame.grid(row=2)
 
-    imgIconPassword = ImageTk.PhotoImage(Image.open("./images/icon-password.png"))
+    imgIconPassword = ImageTk.PhotoImage(Image.open("./images/interface/icon-password.png"))
     iconPassword = tk.Label(passwordFrame, image=imgIconPassword)
     iconPassword.image = imgIconPassword
     iconPassword.grid(row=0, column=0)
@@ -85,7 +85,7 @@ class View:
     self.password_entry.grid(row=0, column=1)
 
     #BUTTON LOGIN
-    imgButtonLogin = ImageTk.PhotoImage(Image.open("./images/btn-login.png"))
+    imgButtonLogin = ImageTk.PhotoImage(Image.open("./images/interface/btn-login.png"))
     button_login = tk.Button(self.loginScreen, image=imgButtonLogin, borderwidth=0, cursor="hand2", command=self.loginUser)
     button_login.image = imgButtonLogin
     button_login.grid(row=3, pady=20)
@@ -103,7 +103,7 @@ class View:
   def registerScreen(self):
     self.registerScreen = tk.Frame(self.container)
 
-    imgLogoIFPR = ImageTk.PhotoImage(Image.open("./images/logo-ifpr.png"))
+    imgLogoIFPR = ImageTk.PhotoImage(Image.open("./images/interface/logo-ifpr.png"))
     bannerIFPR = tk.Label(self.registerScreen, image=imgLogoIFPR)
     bannerIFPR.image = imgLogoIFPR
     bannerIFPR.grid(row=0, pady=20, padx=360)
@@ -112,7 +112,7 @@ class View:
     userNameFrame = tk.Frame(self.registerScreen)
     userNameFrame.grid(row=1, pady=10)
 
-    imgIconUser = ImageTk.PhotoImage(Image.open("./images/icon-user.png"))
+    imgIconUser = ImageTk.PhotoImage(Image.open("./images/interface/icon-user.png"))
     iconUser = tk.Label(userNameFrame, image=imgIconUser)
     iconUser.image = imgIconUser
     iconUser.grid(row=0, column=0)
@@ -124,7 +124,7 @@ class View:
     passwordFrame = tk.Frame(self.registerScreen)
     passwordFrame.grid(row=2, pady=10)
 
-    imgIconPassword = ImageTk.PhotoImage(Image.open("./images/icon-password.png"))
+    imgIconPassword = ImageTk.PhotoImage(Image.open("./images/interface/icon-password.png"))
     iconPassword = tk.Label(passwordFrame, image=imgIconPassword)
     iconPassword.image = imgIconPassword
     iconPassword.grid(row=0, column=0)
@@ -136,7 +136,7 @@ class View:
     confirmPasswordFrame = tk.Frame(self.registerScreen)
     confirmPasswordFrame.grid(row=3, pady=10)
 
-    imgIconConfirmPassword = ImageTk.PhotoImage(Image.open("./images/icon-confirm-password.png"))
+    imgIconConfirmPassword = ImageTk.PhotoImage(Image.open("./images/interface/icon-confirm-password.png"))
     iconConfirmPassword = tk.Label(confirmPasswordFrame, image=imgIconConfirmPassword)
     iconConfirmPassword.image = imgIconConfirmPassword
     iconConfirmPassword.grid(row=0, column=0)
@@ -145,12 +145,12 @@ class View:
     self.confirmPassword_entry.grid(row=0, column=1)
 
     #CUTTONS REGISTER
-    imgButtonBack = ImageTk.PhotoImage(Image.open("./images/btn-back.png"))
+    imgButtonBack = ImageTk.PhotoImage(Image.open("./images/interface/btn-back.png"))
     button_back = tk.Button(self.registerScreen, image=imgButtonBack, borderwidth=0, cursor="hand2", command=self.showLoginScreen)
     button_back.image = imgButtonBack
     button_back.grid(row=4, pady=10)  
 
-    imgButtonRegister = ImageTk.PhotoImage(Image.open("./images/btn-register.png"))
+    imgButtonRegister = ImageTk.PhotoImage(Image.open("./images/interface/btn-register.png"))
     button_register = tk.Button(self.registerScreen, image=imgButtonRegister, borderwidth=0, cursor="hand2", command=self.registerUser)
     button_register.image = imgButtonRegister
     button_register.grid(row=5)
@@ -165,13 +165,13 @@ class View:
     treviewFrame = tk.Frame(self.mainScreen, width=700, height=680)
     treviewFrame.pack(side=RIGHT)
 
-    imgLogoIfpr = ImageTk.PhotoImage(Image.open("./images/logo-ifpr-2.png"))
+    imgLogoIfpr = ImageTk.PhotoImage(Image.open("./images/interface/logo-ifpr-2.png"))
     bannerIfpr = tk.Label(registerFrame, image=imgLogoIfpr)
     bannerIfpr.image = imgLogoIfpr
     bannerIfpr.place(x=10, y=10)
 
-    imgButtonClean = ImageTk.PhotoImage(Image.open("./images/btn-clean.png"))
-    button_clean = tk.Button(registerFrame, image=imgButtonClean, borderwidth=0, cursor="hand2", command=self.clearAllFieldsStudent)
+    imgButtonClean = ImageTk.PhotoImage(Image.open("./images/interface/btn-clean.png"))
+    button_clean = tk.Button(registerFrame, image=imgButtonClean, borderwidth=0, cursor="hand2", command=self.clearAllStudentFields)
     button_clean.image = imgButtonClean
     button_clean.place(x=193, y=90)
 
@@ -192,28 +192,28 @@ class View:
 
     labelPhoto = tk.Label(registerFrame, text="Foto:", font=('Arial', 14))
     labelPhoto.place(x=20, y=310)
-    self.photo = ImageTk.PhotoImage(Image.open("./images/icon-photo.png"))
+    self.photo = ImageTk.PhotoImage(Image.open("./images/interface/icon-photo.png"))
     self.photo_data = None
     self.studentPhoto = tk.Label(registerFrame, image=self.photo, width=265)
     self.studentPhoto.image = self.photo
     self.studentPhoto.place(x=20, y=340)
 
-    imgButtonUploadPhoto = ImageTk.PhotoImage(Image.open("./images/btn-upload.png"))
+    imgButtonUploadPhoto = ImageTk.PhotoImage(Image.open("./images/interface/btn-upload.png"))
     button_uploadPhoto = tk.Button(registerFrame, image=imgButtonUploadPhoto, borderwidth=0, cursor="hand2", command=self.uploadPhoto)
     button_uploadPhoto.image = imgButtonUploadPhoto
     button_uploadPhoto.place(x=20, y=550)
 
-    imgButtonAdd = ImageTk.PhotoImage(Image.open("./images/btn-add.png"))
+    imgButtonAdd = ImageTk.PhotoImage(Image.open("./images/interface/btn-add.png"))
     button_add = tk.Button(registerFrame, image=imgButtonAdd, borderwidth=0, cursor="hand2", command=self.registerStudent)
     button_add.image = imgButtonAdd
     button_add.place(x=20, y=600)
 
-    imgButtonUpdate = ImageTk.PhotoImage(Image.open("./images/btn-update.png"))
+    imgButtonUpdate = ImageTk.PhotoImage(Image.open("./images/interface/btn-update.png"))
     button_update = tk.Button(registerFrame, image=imgButtonUpdate, borderwidth=0, cursor="hand2", command=self.updateStudent)
     button_update.image = imgButtonUpdate
     button_update.place(x=20, y=635)     
   
-    imgLogoIfpr = ImageTk.PhotoImage(Image.open("./images/lista-alunos.png"))
+    imgLogoIfpr = ImageTk.PhotoImage(Image.open("./images/interface/lista-alunos.png"))
     bannerIfpr = tk.Label(treviewFrame, image=imgLogoIfpr)
     bannerIfpr.image = imgLogoIfpr
     bannerIfpr.place(x=220, y=40)
@@ -221,7 +221,7 @@ class View:
     self.entrySearch = Entry(treviewFrame, highlightthickness=1, background="white", width=51, highlightbackground="black", font=('Arial', 14))
     self.entrySearch.place(x=20, y=105)
 
-    imgButtonSearch = ImageTk.PhotoImage(Image.open("./images/btn-search.png"))
+    imgButtonSearch = ImageTk.PhotoImage(Image.open("./images/interface/btn-search.png"))
     button_search = tk.Button(treviewFrame, image=imgButtonSearch, borderwidth=0, cursor="hand2", command=self.searchStudents)
     button_search.image = imgButtonSearch
     button_search.place(x=590, y=102)
@@ -241,7 +241,7 @@ class View:
     self.treeview.place(x=20, y=140)
     self.treeview.bind("<ButtonRelease-1>", self.selectStudentInTable)
 
-    imgButtonRemove = ImageTk.PhotoImage(Image.open("./images/btn-remove.png"))
+    imgButtonRemove = ImageTk.PhotoImage(Image.open("./images/interface/btn-remove.png"))
     button_remove = tk.Button(treviewFrame, image=imgButtonRemove, borderwidth=0, cursor="hand2", command=self.removeStudent)
     button_remove.image = imgButtonRemove
     button_remove.place(x=490, y=600)
@@ -261,30 +261,16 @@ class View:
     curr_directory = os.getcwd()
     self.file_path = askopenfilename(initialdir=curr_directory, title="Select Image", filetypes=(("jpeg files", "*.jpg"), ("png files", "*.png")))
     if self.file_path is not None:
-      os.chdir(curr_directory + "/images/studentsPhoto")
-      completeName = os.path.join(os.getcwd(), self.file_path.split('/')[-1])
-      file1 = open(completeName, 'wb')
-      file1.close()
-      os.chdir(curr_directory)
-      self.photo_data = self.file_path.split('/')[-1]
       photo = ImageTk.PhotoImage(Image.open(self.file_path).resize((265, 200)))
       self.studentPhoto.configure(image=photo)
       self.studentPhoto.image = photo
 
-    # file_types = [('Jpg files', '*.jpg'), ('PNG files', '*.png')]
-    # filename = askopenfilename(filetypes=file_types)
-    # if filename:
-    #   with open(filename, 'rb') as file:
-    #     self.photo_data = base64.b64encode(file.read())
-    #   photo = ImageTk.PhotoImage(Image.open(filename).resize((265, 200)))
-    #   self.studentPhoto.configure(image=photo)
-    #   self.studentPhoto.image = photo
-  
   def registerStudent(self):
     name = self.entryName.get().strip()
     registration = self.entryRegistration.get().strip()
     dateOfBirth = self.entryDateOfBirth.get().strip()
-    photo = self.photo_data
+    # photo = self.photo_data
+    photo = self.savePhotoLocally(self.file_path)
     userLoggedIn = self.user_entry.get().strip()
     self.controller.registerStudent(name, registration, dateOfBirth, photo, userLoggedIn)
 
@@ -296,7 +282,8 @@ class View:
       name = self.entryName.get().strip()
       registration = self.entryRegistration.get().strip()
       dateOfBirth = self.entryDateOfBirth.get().strip()
-      photo = self.photo_data
+      # PRECISA AJUSTAR PARA ATUALIZAR A FOTO
+      photo = self.savePhotoLocally(self.file_path)
       userLoggedIn = self.user_entry.get().strip()
       self.controller.updateStudent(student_id, name, registration, dateOfBirth, photo, userLoggedIn)
     else:
@@ -321,18 +308,10 @@ class View:
   def selectStudentInTable(self, event):
     student = self.treeview.item(self.treeview.focus(), 'values')
     if student:
-      # exibir foto do aluno salva no banco de dados mongodb 
-      # photo = student[4]
-      # if photo != None:
-      #   image = Image.open(io.BytesIO(base64.b64decode(photo)))
-      #   photo = ImageTk.PhotoImage(image.resize((265, 200)))
-      #   self.studentPhoto.configure(image=photo)
-      #   self.studentPhoto.image = photo
-      # else:
-      #   self.photo = ImageTk.PhotoImage(Image.open("./images/icon-photo.png"))
-      #   self.studentPhoto.configure(image=self.photo)
-      #   self.studentPhoto.image = self.photo
-
+      path_photo = "./images/studentsPhoto/" + student[4]
+      photo = ImageTk.PhotoImage(Image.open(path_photo).resize((265, 200)))
+      self.studentPhoto.configure(image=photo)
+      self.studentPhoto.image = photo
       self.entryName.delete(0, END)
       self.entryName.insert(0, student[1])
       self.entryRegistration.delete(0, END)
@@ -349,23 +328,34 @@ class View:
     else:
       self.showWarningMessage('Selecione um aluno para remover!')
 
-  def clearAllFieldsLogin(self):
+  def clearAllLoginFields(self):
     self.user_entry.delete(0, END)
     self.password_entry.delete(0, END)
     self.userName_entry.delete(0, END)
     self.newPassword_entry.delete(0, END)
     self.confirmPassword_entry.delete(0, END)
 
-  def clearAllFieldsStudent(self):
+  def clearAllStudentFields(self):
     self.updateStudentsTable()
-
     self.entryName.delete(0, END)
     self.entryRegistration.delete(0, END)
     self.entryDateOfBirth.delete(0, END)
-    self.photo = ImageTk.PhotoImage(Image.open("./images/icon-photo.png"))
+    self.photo = ImageTk.PhotoImage(Image.open("./images/interface/icon-photo.png"))
     self.studentPhoto.configure(image=self.photo)
     self.studentPhoto.image = self.photo
     
+  def savePhotoLocally(self, photo):
+    # Obtém o diretório atual
+    current_directory = os.getcwd()
+    os.chdir(current_directory + "/images/studentsPhoto")
+    completeName = os.path.join(os.getcwd(), photo.split('/')[-1])
+    file = open(photo, 'rb')
+    file1 = open(completeName, 'wb')
+    file1.write(file.read())
+    file.close()
+    file1.close()
+    os.chdir(current_directory)
+    return photo.split('/')[-1]
 
   def showWarningMessage(self, message):
     messagebox.showwarning(title="Error", message=message)

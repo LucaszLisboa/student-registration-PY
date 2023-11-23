@@ -24,7 +24,7 @@ class Controller:
   def registerStudent(self, name, registration, dateOfBirth, photo, userLoggedIn):
     try:
       self.modelStudent.registerStudent(name, registration, dateOfBirth, photo, userLoggedIn)
-      self.view.clearAllFieldsStudent()
+      self.view.clearAllStudentFields()
       self.view.updateStudentsTable()
       self.view.showSuccessMessage('Aluno cadastrado com sucesso!')
     except ValueError as error:
@@ -33,7 +33,7 @@ class Controller:
   def updateStudent(self, student_id, name, registration, dateOfBirth, photo, userLoggedIn):
     try:
       self.modelStudent.updateStudent(student_id, name, registration, dateOfBirth, photo, userLoggedIn)
-      self.view.clearAllFieldsStudent()
+      self.view.clearAllStudentFields()
       self.view.updateStudentsTable()
       self.view.showSuccessMessage('Aluno atualizado com sucesso!')
     except ValueError as error:
@@ -45,7 +45,7 @@ class Controller:
   def removeStudent(self, student_id, userLoggedIn):
     try:
       self.modelStudent.removeStudent(student_id, userLoggedIn)
-      self.view.clearAllFieldsStudent()
+      self.view.clearAllStudentFields()
       self.view.updateStudentsTable()
       self.view.showSuccessMessage('Aluno removido com sucesso!')
     except ValueError as error:
