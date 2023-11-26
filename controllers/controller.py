@@ -11,6 +11,7 @@ class Controller:
     try:
       self.modelUser.registerUser(userName, password, confirmPassword)
       self.view.showLoginScreen()
+      self.view.showSuccessMessage('Usuário cadastrado com sucesso!')
     except ValueError as error:
       self.view.showWarningMessage(error)
 

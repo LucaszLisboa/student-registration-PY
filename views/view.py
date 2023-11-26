@@ -4,14 +4,9 @@ import sys
 import tkinter as tk
 from tkinter import ttk
 from tkinter.filedialog import askopenfilename
-from io import BytesIO
-import base64
-from bson import Binary
-import io
-
-
-import os
 from tkinter import messagebox  
+from tkcalendar import Calendar, DateEntry
+import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from controllers.controller import Controller
@@ -20,7 +15,7 @@ class View:
   def __init__(self):
     self.root = tk.Tk()
     self.controller = Controller(self)
-    self.insertOrUpdate = None
+    self.file_path = None
 
     self.root.title("Instituto Federal do Paraná - Campus Londrina")
     self.root.geometry("1000x680")
@@ -60,7 +55,6 @@ class View:
     bannerIFPR.image = imgLogoIFPR
     bannerIFPR.grid(row=0, pady=20, padx=360)
 
-    #USERNAME LOGIN
     userFrame = tk.Frame(self.loginScreen)
     userFrame.grid(row=1, pady=20)
 
@@ -72,7 +66,6 @@ class View:
     self.user_entry = Entry(userFrame, highlightthickness=1, background="white", width=18 ,highlightbackground="black", font=('Arial', 28))
     self.user_entry.grid(row=0, column=1) 
 
-    #PASSWORD LOGIN
     passwordFrame = tk.Frame(self.loginScreen)
     passwordFrame.grid(row=2)
 
@@ -84,7 +77,6 @@ class View:
     self.password_entry = Entry(passwordFrame, highlightthickness=1, background="white", width=18, highlightbackground="black", font=('Arial', 28), show="•")
     self.password_entry.grid(row=0, column=1)
 
-    #BUTTON LOGIN
     imgButtonLogin = ImageTk.PhotoImage(Image.open("./images/interface/btn-login.png"))
     button_login = tk.Button(self.loginScreen, image=imgButtonLogin, borderwidth=0, cursor="hand2", command=self.loginUser)
     button_login.image = imgButtonLogin
@@ -108,7 +100,6 @@ class View:
     bannerIFPR.image = imgLogoIFPR
     bannerIFPR.grid(row=0, pady=20, padx=360)
 
-    #USERNAME REGISTER
     userNameFrame = tk.Frame(self.registerScreen)
     userNameFrame.grid(row=1, pady=10)
 
@@ -120,7 +111,6 @@ class View:
     self.userName_entry = Entry(userNameFrame, highlightthickness=1, background="white", width=18, highlightbackground="black", font=('Arial', 28))
     self.userName_entry.grid(row=0, column=1)
 
-    #PASSWORD REGISTER
     passwordFrame = tk.Frame(self.registerScreen)
     passwordFrame.grid(row=2, pady=10)
 
@@ -132,7 +122,6 @@ class View:
     self.newPassword_entry = Entry(passwordFrame, highlightthickness=1, background="white", width=18, highlightbackground="black", font=('Arial', 28), show="•")
     self.newPassword_entry.grid(row=0, column=1)
 
-    #CONFIRM PASSWORD REGISTER
     confirmPasswordFrame = tk.Frame(self.registerScreen)
     confirmPasswordFrame.grid(row=3, pady=10)
 
@@ -144,7 +133,6 @@ class View:
     self.confirmPassword_entry = Entry(confirmPasswordFrame, highlightthickness=1, background="white", width=18, highlightbackground="black", font=('Arial', 28), show="•")
     self.confirmPassword_entry.grid(row=0, column=1)
 
-    #CUTTONS REGISTER
     imgButtonBack = ImageTk.PhotoImage(Image.open("./images/interface/btn-back.png"))
     button_back = tk.Button(self.registerScreen, image=imgButtonBack, borderwidth=0, cursor="hand2", command=self.showLoginScreen)
     button_back.image = imgButtonBack
@@ -162,8 +150,8 @@ class View:
     registerFrame = tk.Frame(self.mainScreen, width=300, height=680)
     registerFrame.pack(side=LEFT)
 
-    treviewFrame = tk.Frame(self.mainScreen, width=700, height=680)
-    treviewFrame.pack(side=RIGHT)
+    treeviewFrame = tk.Frame(self.mainScreen, width=700, height=680)
+    treeviewFrame.pack(side=RIGHT)
 
     imgLogoIfpr = ImageTk.PhotoImage(Image.open("./images/interface/logo-ifpr-2.png"))
     bannerIfpr = tk.Label(registerFrame, image=imgLogoIfpr)
@@ -187,8 +175,9 @@ class View:
 
     labelDateOfBirth = tk.Label(registerFrame, text="Data de Nascimento:", font=('Arial', 14))
     labelDateOfBirth.place(x=20, y=240)
-    self.entryDateOfBirth = Entry (registerFrame, highlightthickness=1, background="white", width=24, highlightbackground="black", font=('Arial', 14))
-    self.entryDateOfBirth.place(x=20, y=270)
+    calendar = DateEntry(registerFrame, width=22, background="green",  foreground='black', borderwidth=8, year=2023, highlightbackground="black", font=('Arial', 14))
+    calendar.place(x=20, y=270)
+    self.entryDateOfBirth = calendar
 
     labelPhoto = tk.Label(registerFrame, text="Foto:", font=('Arial', 14))
     labelPhoto.place(x=20, y=310)
@@ -213,21 +202,26 @@ class View:
     button_update.image = imgButtonUpdate
     button_update.place(x=20, y=635)     
   
-    imgLogoIfpr = ImageTk.PhotoImage(Image.open("./images/interface/lista-alunos.png"))
-    bannerIfpr = tk.Label(treviewFrame, image=imgLogoIfpr)
-    bannerIfpr.image = imgLogoIfpr
-    bannerIfpr.place(x=220, y=40)
+    imgStudentList = ImageTk.PhotoImage(Image.open("./images/interface/student-list.png"))
+    studentList = tk.Label(treeviewFrame, image=imgStudentList)
+    studentList.image = imgStudentList
+    studentList.place(x=220, y=40)
 
-    self.entrySearch = Entry(treviewFrame, highlightthickness=1, background="white", width=51, highlightbackground="black", font=('Arial', 14))
+    imgButtonLogout = ImageTk.PhotoImage(Image.open("./images/interface/btn-logout.png"))
+    button_logout = tk.Button(treeviewFrame, image=imgButtonLogout, borderwidth=0, cursor="hand2", command=self.showLoginScreen)
+    button_logout.image = imgButtonLogout
+    button_logout.place(x=650, y=20)
+
+    self.entrySearch = Entry(treeviewFrame, highlightthickness=1, background="white", width=51, highlightbackground="black", font=('Arial', 14))
     self.entrySearch.place(x=20, y=105)
 
     imgButtonSearch = ImageTk.PhotoImage(Image.open("./images/interface/btn-search.png"))
-    button_search = tk.Button(treviewFrame, image=imgButtonSearch, borderwidth=0, cursor="hand2", command=self.searchStudents)
+    button_search = tk.Button(treeviewFrame, image=imgButtonSearch, borderwidth=0, cursor="hand2", command=self.searchStudents)
     button_search.image = imgButtonSearch
     button_search.place(x=590, y=102)
 
     columns = ('ID', 'Nome', 'Matrícula', 'Data de Nascimento', 'Foto')
-    self.treeview = ttk.Treeview(treviewFrame, columns=columns, show='headings', height=21)
+    self.treeview = ttk.Treeview(treeviewFrame, columns=columns, show='headings', height=21)
     self.treeview.column('ID', minwidth=0, width=50)
     self.treeview.column('Nome', minwidth=0, width=200)
     self.treeview.column('Matrícula', minwidth=0, width=100)
@@ -242,7 +236,7 @@ class View:
     self.treeview.bind("<ButtonRelease-1>", self.selectStudentInTable)
 
     imgButtonRemove = ImageTk.PhotoImage(Image.open("./images/interface/btn-remove.png"))
-    button_remove = tk.Button(treviewFrame, image=imgButtonRemove, borderwidth=0, cursor="hand2", command=self.removeStudent)
+    button_remove = tk.Button(treeviewFrame, image=imgButtonRemove, borderwidth=0, cursor="hand2", command=self.removeStudent)
     button_remove.image = imgButtonRemove
     button_remove.place(x=490, y=600)
 
@@ -269,8 +263,7 @@ class View:
     name = self.entryName.get().strip()
     registration = self.entryRegistration.get().strip()
     dateOfBirth = self.entryDateOfBirth.get().strip()
-    # photo = self.photo_data
-    photo = self.savePhotoLocally(self.file_path)
+    photo = self.file_path
     userLoggedIn = self.user_entry.get().strip()
     self.controller.registerStudent(name, registration, dateOfBirth, photo, userLoggedIn)
 
@@ -282,8 +275,7 @@ class View:
       name = self.entryName.get().strip()
       registration = self.entryRegistration.get().strip()
       dateOfBirth = self.entryDateOfBirth.get().strip()
-      # PRECISA AJUSTAR PARA ATUALIZAR A FOTO
-      photo = self.savePhotoLocally(self.file_path)
+      photo = self.file_path
       userLoggedIn = self.user_entry.get().strip()
       self.controller.updateStudent(student_id, name, registration, dateOfBirth, photo, userLoggedIn)
     else:
@@ -293,13 +285,7 @@ class View:
     self.treeview.delete(*self.treeview.get_children())
     students = self.controller.consultStudents(search_term)
     for student in students:
-      self.treeview.insert('', 'end', values=(
-        student['_id'],
-        student['name'],
-        student['registration'],
-        student['dateOfBirth'],
-        student['photo']
-      ))
+      self.treeview.insert('', 'end', values=(student['_id'], student['name'], student['registration'], student['dateOfBirth'], student['photo']))
 
   def searchStudents(self):
     search_term = self.entrySearch.get().strip()
@@ -308,8 +294,14 @@ class View:
   def selectStudentInTable(self, event):
     student = self.treeview.item(self.treeview.focus(), 'values')
     if student:
-      path_photo = "./images/studentsPhoto/" + student[4]
-      photo = ImageTk.PhotoImage(Image.open(path_photo).resize((265, 200)))
+      if student[4] == "None":
+        path_photo = "./images/interface/icon-photo.png"
+        photo = ImageTk.PhotoImage(Image.open(path_photo))
+        self.file_path = None
+      else:
+        path_photo = student[4]
+        photo = ImageTk.PhotoImage(Image.open(path_photo).resize((265, 200)))
+        self.file_path = path_photo
       self.studentPhoto.configure(image=photo)
       self.studentPhoto.image = photo
       self.entryName.delete(0, END)
@@ -337,25 +329,13 @@ class View:
 
   def clearAllStudentFields(self):
     self.updateStudentsTable()
+    self.entrySearch.delete(0, END)
     self.entryName.delete(0, END)
     self.entryRegistration.delete(0, END)
     self.entryDateOfBirth.delete(0, END)
     self.photo = ImageTk.PhotoImage(Image.open("./images/interface/icon-photo.png"))
     self.studentPhoto.configure(image=self.photo)
     self.studentPhoto.image = self.photo
-    
-  def savePhotoLocally(self, photo):
-    # Obtém o diretório atual
-    current_directory = os.getcwd()
-    os.chdir(current_directory + "/images/studentsPhoto")
-    completeName = os.path.join(os.getcwd(), photo.split('/')[-1])
-    file = open(photo, 'rb')
-    file1 = open(completeName, 'wb')
-    file1.write(file.read())
-    file.close()
-    file1.close()
-    os.chdir(current_directory)
-    return photo.split('/')[-1]
 
   def showWarningMessage(self, message):
     messagebox.showwarning(title="Error", message=message)
