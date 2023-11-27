@@ -254,7 +254,7 @@ class View:
   def uploadPhoto(self):
     curr_directory = os.getcwd()
     self.file_path = askopenfilename(initialdir=curr_directory, title="Select Image", filetypes=(("jpeg files", "*.jpg"), ("png files", "*.png")))
-    if self.file_path is not None:
+    if self.file_path != "":
       photo = ImageTk.PhotoImage(Image.open(self.file_path).resize((265, 200)))
       self.studentPhoto.configure(image=photo)
       self.studentPhoto.image = photo
@@ -342,6 +342,3 @@ class View:
 
   def showSuccessMessage(self, message):
     messagebox.showinfo(title="Success", message=message)
-
-
-View()

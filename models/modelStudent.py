@@ -80,7 +80,7 @@ class ModelStudent:
       return True
     
   def savePhotoLocally(self, photo):
-    if photo == None:
+    if photo == None or photo == "":
       return None
     else: 
       if photo.startswith("./images/studentsPhoto"):

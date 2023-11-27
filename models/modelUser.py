@@ -14,6 +14,7 @@ class ModelUser:
 
   def registerUser(self, userName, password, confirmPassword):
     existRegister = self.verifyUserRegister(userName)
+    self.checkUserAndPasswordEntry(userName, password)
     if existRegister == False:
       if password == confirmPassword:
         self.id = str(ObjectId())
@@ -43,6 +44,12 @@ class ModelUser:
       return False
     else:
       return True
+    
+  def checkUserAndPasswordEntry(self, user, password):
+    if len(user) < 3:
+      raise ValueError("Usuário deve conter no mínimo 3 caracteres, tente novamente!")
+    if len(password) < 4:
+      raise ValueError("Senha deve conter no mínimo 4 caracteres, tente novamente!")
     
   def loginUser(self, userName, password):
     encryptedPassword = hashlib.sha256(password.encode()).hexdigest()
